@@ -42,7 +42,7 @@ public abstract class ArtifactProcessor {
 
   protected File writePomXmlFromDotPom() throws IOException {
     File repoPomFile = createPomFile();
-    File pomFile = new File(buildDirectory, artifact.getArtifactId() + "-" + artifact.getVersion() + "-pom.xml");
+    File pomFile = new File(buildDirectory, ArtifactUtils.getPomXmlFileName(artifact));
     final InputStream inputStream = new FileInputStream(repoPomFile);
     InputSupplier<InputStream> inputSupplier = new InputSupplier<InputStream>() {
       @Override
@@ -73,7 +73,7 @@ public abstract class ArtifactProcessor {
   protected void writeLicenseNameFile(Model model) throws IOException {
     for (License license : model.getLicenses()) {
       String licenseName = license.getName().replace(" ", "_");
-      File licenseFile = new File(buildDirectory, artifact.getArtifactId() + "-" + artifact.getVersion() + "-" + licenseName + ".txt");
+      File licenseFile = new File(buildDirectory, ArtifactUtils.getPomLicenseFileName(artifact, licenseName));
       Files.touch(licenseFile);
     }
   }

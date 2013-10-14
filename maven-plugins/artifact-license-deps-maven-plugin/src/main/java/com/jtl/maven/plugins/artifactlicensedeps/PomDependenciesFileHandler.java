@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 public class PomDependenciesFileHandler {
-  // artifactId, version
-  private static final String FILENAME_FORMAT = "%s-%s-DEPENDENCIES-POM.txt";
   // groupId, artifactId, version, type
   private static final String ARTIFACT_HEADER_FORMAT = "%s:%s:%s:%s - POM Derived Artifact Dependencies";
   // groupId, artifactId, version, type
@@ -36,11 +34,10 @@ public class PomDependenciesFileHandler {
 
   private void initialize() throws FileNotFoundException {
     mavenLogger.logInfo(artifact, "Creating file for dependencies found in the POM");
-    String pomDependencyFileName = Files.simplifyPath(buildDirectory.getAbsolutePath()) + File.separator +
-            String.format(FILENAME_FORMAT, artifact.getArtifactId(), artifact.getVersion());
+    String pomDependencyFileName = Files.simplifyPath(buildDirectory.getAbsolutePath()) + File.separator + ArtifactUtils.getPomDependenciesFileName(artifact);
     File pomDependenciesFile = new File(pomDependencyFileName);
     FileUtils.deleteQuietly(pomDependenciesFile);
-    mavenLogger.logInfo(artifact, "File is " + pomDependenciesFile.getAbsolutePath().toString());
+    mavenLogger.logInfo(artifact, "File is " + pomDependenciesFile.getAbsolutePath());
 
     pomDependenciesFileWriter = Files.newWriter(pomDependenciesFile, Charset.defaultCharset());
   }

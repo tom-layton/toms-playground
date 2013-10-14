@@ -71,7 +71,7 @@ public class JarArtifactProcessor extends ArtifactProcessor {
   }
 
   private File writePomXmlFromJar(JarFile jarFile, JarEntry jarEntry) throws IOException {
-    File pomFile = new File(buildDirectory, artifact.getArtifactId() + "-" + artifact.getVersion() + "-pom.xml");
+    File pomFile = new File(buildDirectory, ArtifactUtils.getPomXmlFileName(artifact));
     final InputStream inputStream = jarFile.getInputStream(jarEntry);
     InputSupplier<InputStream> inputSupplier = new InputSupplier<InputStream>() {
       @Override
@@ -94,7 +94,7 @@ public class JarArtifactProcessor extends ArtifactProcessor {
   private void writeLicenseFile(final JarFile jarFile) throws IOException {
     JarEntry licenseEntry = findLicenseEntry(jarFile);
     if (licenseEntry != null) {
-      File licenseFile = new File(buildDirectory, artifact.getArtifactId() + "-" + artifact.getVersion() + "-LICENSE.txt");
+      File licenseFile = new File(buildDirectory, ArtifactUtils.getLicenseFileName(artifact, licenseEntry.getName()));
       final InputStream inputStream = jarFile.getInputStream(licenseEntry);
       InputSupplier<InputStream> inputSupplier = new InputSupplier<InputStream>() {
         @Override
@@ -120,7 +120,7 @@ public class JarArtifactProcessor extends ArtifactProcessor {
   private void writeDependenciesFile(final JarFile jarFile) throws IOException {
     JarEntry dependenciesEntry = findDependenciesEntry(jarFile);
     if (dependenciesEntry != null) {
-      File licenseFile = new File(buildDirectory, artifact.getArtifactId() + "-" + artifact.getVersion() + "-DEPENDENCIES-JAR.txt");
+      File licenseFile = new File(buildDirectory, ArtifactUtils.getDependenciesFileName(artifact, dependenciesEntry.getName()));
       final InputStream inputStream = jarFile.getInputStream(dependenciesEntry);
       InputSupplier<InputStream> inputSupplier = new InputSupplier<InputStream>() {
         @Override
